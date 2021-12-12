@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { BehaviorSubject, catchError, EMPTY, map, mergeMap, Observable, take, tap } from "rxjs";
+import { BehaviorSubject, map, mergeMap, Observable, tap } from "rxjs";
 import { webSocket, WebSocketSubject } from "rxjs/webSocket";
-import { ApiKey } from "../../../assets/coin-api.key";
+import { ApiKey } from "@assets/coin-api.key";
 import { HistoryPair, HistoryPairMapper, Pair, PairMapper } from "../models";
 
 @Injectable({
@@ -38,10 +38,14 @@ export class ApiService {
       this.websocketConnection$.next({
         type: 'hello', apikey: ApiKey, subscribe_data_type: ['trade'],
         subscribe_filter_symbol_id: [
-          `BITSTAMP_SPOT_${ pairItems[0] }_${ pairItems[1] }$`,
-          `BITFINEX_SPOT_${ pairItems[0] }_${ pairItems[1] }$`,
-          `COINBASE_SPOT_${ pairItems[0] }_${ pairItems[1] }$`,
-          `ITBIT_SPOT_${ pairItems[0] }_${ pairItems[1] }$`,
+          `BITSTAMP_SPOT_${ pairItems[0] }_${ pairItems[1] }`,
+          `BITFINEX_SPOT_${ pairItems[0] }_${ pairItems[1] }`,
+          `BITFOREX_SPOT_${ pairItems[0] }_${ pairItems[1] }`,
+          `COINBASE_SPOT_${ pairItems[0] }_${ pairItems[1] }`,
+          `POLONIEX_SPOT_${ pairItems[0] }_${ pairItems[1] }`,
+          `KRAKENFTS_SPOT_${ pairItems[0] }_${ pairItems[1] }`,
+          `ITBIT_SPOT_${ pairItems[0] }_${ pairItems[1] }`,
+          `IDCM_SPOT_${ pairItems[0] }_${ pairItems[1] }`,
         ],
       });
     });
@@ -49,10 +53,7 @@ export class ApiService {
     return this.pairName$.pipe(
       mergeMap(pairName => this.websocketConnection$.pipe(
         map(data => PairMapper.getPairFromResponse(data, pairName)),
-        tap(pair => {
-          console.log('Websocket')
-          this.pairData.next(pair)
-        }),
+        tap(pair => this.pairData.next(pair)),
       )),
     );
   }
@@ -66,10 +67,7 @@ export class ApiService {
           { headers: new HttpHeaders({ 'X-CoinAPI-Key': ApiKey }) }
         ).pipe(
           map(data => HistoryPairMapper.getHistoryPairFromResponse(data)),
-          tap(data => {
-            console.log('REST')
-            this.historyCurrencyPair.next(data)
-          })
+          tap(data => this.historyCurrencyPair.next(data))
         )
       }),
     );

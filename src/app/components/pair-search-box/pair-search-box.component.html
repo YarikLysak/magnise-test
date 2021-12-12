@@ -1,0 +1,12 @@
+<form class="form" [formGroup]="searchForm" (submit)="onSubmit($event)">
+  <mat-form-field class="field-full-width" appearance="fill">
+    <mat-label>Search Pair</mat-label>
+    <input matInput formControlName="search" required>
+    <ng-container *ngIf="searchForm.get('search')?.errors as errors">
+      <mat-error *ngIf="errors && searchForm.touched">
+        {{ (errors['required'] && errorsOutput['required']) || (errors['wrongPairInput'] && errorsOutput['wrongPairInput']) }}
+      </mat-error>
+    </ng-container>
+  </mat-form-field>
+  <button [disabled]="!searchForm.get('search')?.value" type="submit" mat-raised-button>Subscribe</button>
+</form>

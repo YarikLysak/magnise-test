@@ -1,0 +1,18 @@
+<h3>Market Data:</h3>
+<mat-card>
+  <mat-card-content class="wrapper">
+    <div class="column">
+      <div>Symbol:</div>
+      <div>{{ pair.pairName }}</div>
+    </div>
+    <div class="column">
+      <div>Price:</div>
+      <div>{{ pair.price | currency }}</div>
+    </div>
+    <div class="column">
+      <div>Time:</div>
+      <div>{{ pair.time | date: 'MMM d, h:mm aaa' }} </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+

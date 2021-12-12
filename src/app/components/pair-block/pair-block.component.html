@@ -1,0 +1,9 @@
+<mat-card>
+  <mat-card-content>
+    <app-pair-search-box></app-pair-search-box>
+
+    <app-pair-market-data *ngIf="apiService.pairData$ | async as pairData" [pair]="pairData"></app-pair-market-data>
+
+    <app-pair-chart-data *ngIf="apiService.historyCurrencyPair$ | async as historyPair" [data]="historyPair"></app-pair-chart-data>
+  </mat-card-content>
+</mat-card>
